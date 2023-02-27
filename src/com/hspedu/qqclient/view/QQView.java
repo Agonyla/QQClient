@@ -73,6 +73,8 @@ public class QQView {
                                     System.out.println("发送文件");
                                 }
                                 case "9" -> {
+                                    // 调用方法， 给服务器发送一个退出系统的message
+                                    userClientService.logout();
                                     loop = false;
                                 }
                             }
