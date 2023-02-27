@@ -45,7 +45,7 @@ public class QQView {
                     // 编写一个类 UserClientService[用户登录/注册功能]
                     // 这里有很多代码
                     if (userClientService.checkUser(userID, passwd)) {
-                        System.out.println("\n========欢迎 (用户 " + userID + ") ========");
+                        System.out.println("\n========欢迎 (用户 " + userID + " 登录成功) ========");
                         // 进入二级菜单
                         while (loop) {
                             System.out.println("\n========网络通信系统二级菜单(用户 " + userID + ")========");
@@ -53,7 +53,7 @@ public class QQView {
                             System.out.println("\t\t\t2 群发消息");
                             System.out.println("\t\t\t3 私聊消息");
                             System.out.println("\t\t\t4 发送文件");
-                            System.out.println("\t\t\t9 群发消息");
+                            System.out.println("\t\t\t9 退出系统");
                             System.out.print("请输入你的选择: ");
 
                             key = Utility.readString(1);
@@ -79,7 +79,7 @@ public class QQView {
                         System.out.println("========登录失败========\n\n\n");
                     }
                 }
-                case "9" -> this.loop = false;
+                case "9" -> loop = false;
             }
         }
     }
