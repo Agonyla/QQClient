@@ -4,6 +4,7 @@ import com.hspedu.qqcommon.Message;
 import com.hspedu.qqcommon.MessageType;
 import com.hspedu.qqcommon.User;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -27,7 +28,6 @@ public class UserClientService {
         boolean b = false;
         user.setUserId(userId);
         user.setPasswd(password);
-
 
         try {
             // 连接到服务端, 发送user对象
@@ -56,6 +56,24 @@ public class UserClientService {
             throw new RuntimeException(e);
         }
         return b;
+
+    }
+
+    // 向服务器端请求在线用户列表
+    public void onlineFriendList() {
+
+        Message message = new Message();
+        message.setMessageType(MessageType.MESSAGE_GET_ONLINE_FRIEND);
+        message.setSender(user.getUserId());
+
+        // 发送给服务器
+        // 应该得到当前线程的socket 对应的 ObjectOutputStream
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(ManageClientConnectServerThread.getClientConnectServerThread(user.getUserId()).getSocket().getOutputStream());
+            oos.writeObject(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }

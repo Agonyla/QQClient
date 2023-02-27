@@ -1,6 +1,7 @@
 package com.hspedu.qqclient.service;
 
 import com.hspedu.qqcommon.Message;
+import com.hspedu.qqcommon.MessageType;
 
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -31,6 +32,18 @@ public class ClientConnectServerThread extends Thread {
                 // 如果没有数据, 线程会阻塞在这里
                 Message message = (Message) ois.readObject();
                 // 后面再做其他的处理
+                if (message.getMessageType().equals(MessageType.MESSAGE_RET_ONLINE_FRIEND)) {
+
+                    // 取出在线用户列表，并显示
+                    String[] onlineUsers = message.getContent().split(" ");
+                    System.out.println("\n=========在线用户列表如下=========");
+                    for (String onlineUser : onlineUsers) {
+                        System.out.println("用户: " + onlineUser);
+                    }
+
+                } else {
+                    System.out.println("是其他类型的message，暂时不做处理");
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
