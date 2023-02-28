@@ -41,6 +41,9 @@ public class ClientConnectServerThread extends Thread {
                         System.out.println("用户: " + onlineUser);
                     }
 
+                } else if (message.getMessageType().equals(MessageType.MESSAGE_COMM_MIS)) {
+                    System.out.println("\n" + message.getSender() + " 对 " + message.getGetter() + " 说 " + message.getContent());
+
                 } else {
                     System.out.println("是其他类型的message，暂时不做处理");
                 }
