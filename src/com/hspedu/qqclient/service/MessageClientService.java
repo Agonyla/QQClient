@@ -19,11 +19,12 @@ public class MessageClientService {
      * @param content  内容
      * @param senderId 发送用户id
      * @param getterId 接受用户id
+     *                 私聊消息
      */
     public void sendMessageToOne(String content, String senderId, String getterId) {
 
         Message message = new Message();
-        message.setMessageType(MessageType.MESSAGE_COMM_MIS);
+        message.setMessageType(MessageType.MESSAGE_COMM_MES);
         message.setContent(content);
         message.setSender(senderId);
         message.setGetter(getterId);
@@ -40,4 +41,27 @@ public class MessageClientService {
 
 
     }
+
+    /**
+     * @param content  内容
+     * @param senderId 发送用户id
+     *                 群发消息
+     */
+    public void sendMessageToAll(String content, String senderId) {
+        Message message = new Message();
+        message.setMessageType(MessageType.MESSAGE_TO_ALL_MES);
+        message.setContent(content);
+        message.setSender(senderId);
+        message.setSendTime(new Date().toString());
+        System.out.println(senderId + " 对大家说 " + content);
+        
+        // 发送给服务端
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(ManageClientConnectServerThread.getClientConnectServerThread(senderId).getSocket().getOutputStream());
+            oos.writeObject(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

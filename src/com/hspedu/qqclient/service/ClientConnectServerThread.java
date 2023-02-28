@@ -23,11 +23,12 @@ public class ClientConnectServerThread extends Thread {
 
     @Override
     public void run() {
-
+        
         // 因为Thread需要在后台和服务器通信, 因此我们while循环
         while (true) {
-            System.out.println("客户端线程, 等待读取从服务器发送的消息....");
+
             try {
+                System.out.println("客户端线程, 等待读取从服务器发送的消息....");
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 // 如果没有数据, 线程会阻塞在这里
                 Message message = (Message) ois.readObject();
@@ -41,8 +42,11 @@ public class ClientConnectServerThread extends Thread {
                         System.out.println("用户: " + onlineUser);
                     }
 
-                } else if (message.getMessageType().equals(MessageType.MESSAGE_COMM_MIS)) {
+                } else if (message.getMessageType().equals(MessageType.MESSAGE_COMM_MES)) {
                     System.out.println("\n" + message.getSender() + " 对 " + message.getGetter() + " 说 " + message.getContent());
+
+                } else if (message.getMessageType().equals(MessageType.MESSAGE_TO_ALL_MES)) {
+                    System.out.println("\n" + message.getSender() + " 对大家说 " + message.getContent());
 
                 } else {
                     System.out.println("是其他类型的message，暂时不做处理");
