@@ -3,6 +3,7 @@ package com.hspedu.qqclient.service;
 import com.hspedu.qqcommon.Message;
 import com.hspedu.qqcommon.MessageType;
 
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
@@ -23,7 +24,7 @@ public class ClientConnectServerThread extends Thread {
 
     @Override
     public void run() {
-        
+
         // 因为Thread需要在后台和服务器通信, 因此我们while循环
         while (true) {
 
@@ -47,6 +48,17 @@ public class ClientConnectServerThread extends Thread {
 
                 } else if (message.getMessageType().equals(MessageType.MESSAGE_TO_ALL_MES)) {
                     System.out.println("\n" + message.getSender() + " 对大家说 " + message.getContent());
+
+                } else if (message.getMessageType().equals(MessageType.MESSAGE_FILE_MES)) {
+
+                    System.out.println("\n" + message.getSender() + " 给 " + message.getGetter() + " 发送文件: " + message.getSrc()
+                            + "\n" + " 我的电脑的目录: " + message.getDest());
+
+                    // 取出message的文件文字数组, 写到本地
+                    FileOutputStream fileOutputStream = new FileOutputStream(message.getDest());
+                    fileOutputStream.write(message.getFileBytes());
+                    fileOutputStream.close();
+                    System.out.println("\n" + "保存文件成功");
 
                 } else {
                     System.out.println("是其他类型的message，暂时不做处理");

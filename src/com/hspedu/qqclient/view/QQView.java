@@ -1,5 +1,6 @@
 package com.hspedu.qqclient.view;
 
+import com.hspedu.qqclient.service.FileClientServier;
 import com.hspedu.qqclient.service.MessageClientService;
 import com.hspedu.qqclient.service.UserClientService;
 import com.hspedu.qqclient.utils.Utility;
@@ -26,6 +27,9 @@ public class QQView {
     private UserClientService userClientService = new UserClientService();
     // 对象用户私聊/群聊
     private MessageClientService messageClientService = new MessageClientService();
+
+    // 发送文件
+    private FileClientServier fileClientServier = new FileClientServier();
 
     // 显示主菜单
     public void mainMenu() {
@@ -71,7 +75,7 @@ public class QQView {
                                     String content = Utility.readString(50);
                                     // 编写一个方法
                                     messageClientService.sendMessageToAll(content, userID);
-                                    
+
                                 }
                                 case "3" -> {
                                     System.out.print("请输入想聊天的用户号(在线): ");
@@ -83,7 +87,14 @@ public class QQView {
 
                                 }
                                 case "4" -> {
-                                    System.out.println("发送文件");
+                                    System.out.print("请输入你想发送文件的用户(在线用户): ");
+                                    String getterId = Utility.readString(50);
+                                    System.out.print("请输入发送文件的路径(D:\\Test\\QQClient\\xx.jpg): ");
+                                    String src = Utility.readString(100);
+                                    System.out.print("请输入接受文件的路径(D:\\Test\\QQServer\\yy.jpg): ");
+                                    String dest = Utility.readString(100);
+                                    fileClientServier.sendFileToOne(src, dest, userID, getterId);
+                                    
                                 }
                                 case "9" -> {
                                     // 调用方法， 给服务器发送一个退出系统的message
